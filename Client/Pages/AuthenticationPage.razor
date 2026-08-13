@@ -3,16 +3,18 @@
 @inject NavigationManager NavigatonManager
 @code{
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+
     protected async override Task OnInitializedAsync()
     {
+        await ChechUserAuthentication();
+
+    }
+
+    private async Task ChechUserAuthentication()
+    {
         var user = (await AuthenticationState).User;
-        if (user.Identity!.IsAuthenticated)
-        {
-            NavManager.NavigateTo("/home/dashboard");
-        }
-        else
-        {
-            NavigatonManager.NavigateTo("/identity/account/login");
-        }
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if (!isUserAuthenticated)
+            NavManager.NavigateTo("/identity/account/login");
     }
 }

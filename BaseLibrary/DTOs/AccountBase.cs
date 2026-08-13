@@ -17,6 +17,5 @@ namespace BaseLibrary.DTOs
         [DataType(DataType.Password)]
         [Required]
         public string? Password { get; set; }
-    
     }
 }

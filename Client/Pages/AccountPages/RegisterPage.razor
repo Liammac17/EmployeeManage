@@ -67,6 +67,14 @@
 
     Register User = new();
 
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await ChechUserAuthentication();
+
+    }
+
     async Task HandleRegistration()
     {
         ShowLoadButton = true;
@@ -85,5 +93,12 @@
     private async Task DisplayDialog(string content, string title)
     {
         await DialogService.AlertAsync(content, title);
+    }
+    private async Task ChechUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if (!isUserAuthenticated)
+            NavManager.NavigateTo("/home/dashboard");
     }
 }

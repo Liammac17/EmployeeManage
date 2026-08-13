@@ -1,5 +1,24 @@
 ﻿@page "/home/dashboard"
-<h1>HOME PAGE</h1>
-@code {
+@using Client.Pages.AdministrationPages
+@using Client.Pages.DepartmentPages
 
+<TableBanner/>
+<GeneralDepartmentDialog />
+
+@code {
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await ChechUserAuthentication();
+
+    }
+
+    private async Task ChechUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+        bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        if (!isUserAuthenticated)
+            NavManager.NavigateTo("/identity/account/login");
+    }
 }
