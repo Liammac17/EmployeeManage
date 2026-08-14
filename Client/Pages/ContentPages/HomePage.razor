@@ -1,9 +1,8 @@
 ﻿@page "/home/dashboard"
-@using Client.Pages.AdministrationPages
-@using Client.Pages.DepartmentPages
 
 <TableBanner/>
-<GeneralDepartmentDialog />
+<GeneralDepartmentPage />
+<DepartmentPage />
 
 @code {
     [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }

@@ -1,9 +1,7 @@
 ﻿@page "/identity/account/login"
-@using Client.Pages.OtherPages
-@using Syncfusion.Blazor.Popups
+
 @layout AuthenticationLayout
 
-@inject SfDialogService DialogService
 
 <div class="container">
     <div class="row">
@@ -76,7 +74,7 @@
                     RefreshToken = result.RefreshToken
                 });
             ShowLoadButton = false;
-            NavManager.NavigateTo("/", forceLoad: true);
+            NavManager.NavigateTo("/home/dashboard", forceLoad: true);
         }
         else
         {
@@ -87,14 +85,14 @@
 
     private async Task DisplayDialog(string content, string title)
     {
-        await DialogService.AlertAsync(content, title);
+        await dialogService.AlertAsync(content, title);
     }
 
     private async Task ChechUserAuthentication()
     {
         var user = (await AuthenticationState).User;
         bool isUserAuthenticated = user.Identity!.IsAuthenticated;
-        if (!isUserAuthenticated)
+        if (isUserAuthenticated)
             NavManager.NavigateTo("/home/dashboard");
     }
     
