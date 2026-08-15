@@ -44,8 +44,8 @@ namespace ServerLibrary.Repositories.Implementations
         {
             var dep = await appDbContext.Countries.FindAsync(item.Id);
             if (dep is null) return NotFound();
-
             dep.Name = item.Name;
+
             await Commit();
 
             return Success();
