@@ -76,8 +76,8 @@
         }
 
         //Employee
-
-        public bool ShowEmployee { get; set; }
+        //Show on startup
+        public bool ShowEmployee { get; set; } = true;
         public void EmployeeClicked()
         {
             ResetAllDepartments();

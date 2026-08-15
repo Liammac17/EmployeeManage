@@ -46,6 +46,8 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
+
 builder.Services.AddScoped<IGenericRepositoryInterface<GeneralDepartment>, GeneralDepartmentRepository>();
 builder.Services.AddScoped<IGenericRepositoryInterface<Department>, DepartmentRepository>();
 builder.Services.AddScoped<IGenericRepositoryInterface<Branch>, BranchRepository>();
@@ -54,7 +56,9 @@ builder.Services.AddScoped<IGenericRepositoryInterface<Country>, CountryReposito
 builder.Services.AddScoped<IGenericRepositoryInterface<City>, CityRepository>();
 builder.Services.AddScoped<IGenericRepositoryInterface<Town>, TownRepository>();
 
-builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
+builder.Services.AddScoped<IGenericRepositoryInterface<Employee>, EmployeeRepository>();
+
+
 builder.Services.AddCors(options =>
 { 
     options.AddPolicy("AllowBlazorWasm",
