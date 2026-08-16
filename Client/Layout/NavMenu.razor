@@ -1,29 +1,24 @@
-﻿
-<AuthorizeView>
-    <Authorized>
-        <div class="top-row ps-3 navbar navbar-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="">
-                    Welcome, @context.User.Identity!.Name
-                </a>
+﻿@attribute [Authorize]
 
-                <button title="Navigation menu"
-                        class="navbar-toggler"
-                        @onclick="ToggleNavMenu">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </div>
+
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/home/dashboard">
+            <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+        </a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
    
 
-        <div class="@NavMenuCssClass nav-scrollable">
+        <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
                 <nav class="flex-column">
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link p-2" href="/home/dashboard">
-                            <span class="bi bi-house-door-fill nav-menu" aria-hidden="true"></span> Home
-                        </NavLink>
-                    </div>
 
+        <AuthorizeView Roles="Admin">
+            <Authorized>
                     <div class="nav-item px-3">
                         <NavLink class="nav-link p-1" @onclick="ShowAdminMenuContainer" style="cursor:pointer;" href="javascript:void()">
                             <div class="hstack gap-1">
@@ -39,6 +34,8 @@
                             </div>
                         </a>
                     </div>
+            </Authorized>
+        </AuthorizeView>
                     <div class="nav-item px-3" style="margin-top:@DepartnmentMargin">
                         <NavLink class="nav-link p-2"
                                  @onclick="ShowDepartmentContainer"
@@ -80,52 +77,91 @@
                                     </div>
                                 </a>
                             </li>
+
                             <li style="list-style:none">
                                 <hr/>
                             </li>
-                            <li style="list-style:none" class="cursorStyle" @onclick="CountryClicked">
-                                <a class="nav-link p-2">
-                                    <div class="hstack">
+
+                            <li style="list-style:none">
+                               <a class="nav-link p-2 cursorStyle" @onclick="CountryClicked">
+                                   <div class="hstack">
                                         <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                                         <span>Country</span>
                                     </div>
                                 </a>
                             </li>
-                            <li style="list-style:none" class="cursorStyle" @onclick="CityClicked">
-                                <a class="nav-link p-2">
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2cursorStyle" @onclick="CityClicked">
                                     <div class="hstack">
                                         <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                                         <span>City</span>
                                     </div>
                                 </a>
                             </li>
-                            <li style="list-style:none" class="cursorStyle" @onclick="TownClicked">
-                                <a class="nav-link p-2">
+
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2 cursorStyle" @onclick="TownClicked">
                                     <div class="hstack">
-                                        <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span class="bi bi-stopwatch fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                                         <span>Town</span>
                                     </div>
                                 </a>
                             </li>
+
                             <li style="list-style:none">
                                 <hr />
                             </li>
-                            <li style="list-style:none" class="cursorStyle" @onclick="EmployeeClicked">
-                                <a class="nav-link p-2">
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2 cursorStyle" @onclick="OvertimeTypeClicked">
                                     <div class="hstack">
-                                        <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span class="bi bi-stopwatch fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span>Overtime Type</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2 cursorStyle" @onclick="SanctionTypeClicked">
+                                    <div class="hstack">
+                                        <span class="bi bi-stopwatch fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span>Sanction Type</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2 cursorStyle" @onclick="VacationTypeClicked">
+                                    <div class="hstack">
+                                        <span class="bi bi-stopwatch fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                        <span>Vacation Type</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li style="list-style:none">
+                                <hr />
+                            </li>
+
+                            <li style="list-style:none">
+                                <a class="nav-link p-2 cursorStyle" @onclick="EmployeeClicked">
+                                    <div class="hstack">
+                                <span class="bi bi-chevron-bar-contract fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
                                         <span>Employees</span>
                                     </div>
                                 </a>
                             </li>
+
 
                         </ul>
                     </div>
                     </div>
                 </nav>
             </div>
-    </Authorized>
-</AuthorizeView>
+            
+        
 
 <style>
     #cursorStyle {
@@ -142,7 +178,7 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-    public string DepartnmentMargin { get; set; } = "-3.5rem";
+    public string DepartnmentMargin { get; set; } = "-1.2rem";
     private string CssStyle = "hidden";
     public bool ShowHide { get; set; } = false;
 
@@ -156,7 +192,7 @@
         }
         else
         {
-            DepartnmentMargin = "-3.5rem";
+            DepartnmentMargin = "-1.5rem";
             CssStyle = "hidden";
         }
     }
@@ -186,4 +222,9 @@
 
     //Employee
     void EmployeeClicked() => allState.EmployeeClicked();
+
+    //Types clicked
+    void OvertimeTypeClicked() => allState.OvertimeTypeClicked();
+    void VacationTypeClicked() => allState.VacationTypeClicked();
+    void SanctionTypeClicked() => allState.SanctionTypeClicked();
 }

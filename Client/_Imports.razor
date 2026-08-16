@@ -14,6 +14,7 @@
 @using Client.Pages.ContentPages.UserPages
 @using Client.Pages.ContentPages.LocationPages
 @using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
 @using BaseLibrary.DTOs
 @using ClientLibrary.Helpers
 @using ClientLibrary.Services.Contracts
@@ -23,6 +24,11 @@
 @using Client.Pages.ContentPages.DepartmentPages
 @using Client.Pages.OtherPages
 @using Client.Pages.ContentPages.EmployeePages
+
+@using Client.Pages.OtherPages.OvertimePages
+@using Client.Pages.OtherPages.VacationPages
+@using Client.Pages.OtherPages.DoctorPages
+@using Client.Pages.OtherPages.SanctionPages
 
 
 
@@ -50,3 +56,15 @@
 
 @* /Employee *@
 @inject IGenericServiceInterface<Employee> employeeService
+
+@* / Supplementary tables *@
+@inject IGenericServiceInterface<Overtime> overtimeService
+@inject IGenericServiceInterface<OvertimeType> overtimeTypeService
+
+@inject IGenericServiceInterface<Vacation> vacationService
+@inject IGenericServiceInterface<VacationType> vacationTypeService
+
+@inject IGenericServiceInterface<Sanction> sanctionService
+@inject IGenericServiceInterface<SanctionType> sanctionTypeService
+
+@inject IGenericServiceInterface<Doctor> doctorService
