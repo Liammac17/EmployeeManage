@@ -154,6 +154,14 @@
             Action?.Invoke();
         }
 
+        //Show User Profile
+        public bool ShowUserProfile { get; set; }
+        public void UserProfileClicked()
+        {
+            ResetAllDepartments();
+            ShowUserProfile = true;
+            Action?.Invoke();
+        }
 
         private void ResetAllDepartments()
         {

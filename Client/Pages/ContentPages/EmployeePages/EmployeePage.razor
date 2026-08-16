@@ -9,11 +9,17 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <button class="btn btn-outline-success" @onclick="ShowAddOrUpdateEmployeeButtonClicked"><i class="bi bi-plus-circle"></i></button>
+                            <button class="btn btn-outline-success" @onclick="ShowAddOrUpdateEmployeeButtonClicked">
+                                <i class="bi bi-plus-circle-dotted"></i> Add Employee
+                            </button>
                         </div>
 
                         <div class="card-body">
-                            <SfGrid DataSource="@Employees">
+                            @{
+                                var Tool = (new List<string>() { "Search", "ExcelExport", "PdfExport", "Print" });
+                            }
+                            <SfGrid DataSource="@Employees" AllowPaging="true" AllowSorting="true"
+                                    Toolbar="@Tool" AllowExcelExport="true" @ref="DefaultGrid" AllowPdfExport="true">
                                 <GridColumns>
                                     <GridColumn HeaderText="Employee Image">
                                         <Template>
@@ -91,10 +97,11 @@
 <SanctionDialog @ref="sanctionDialog" ItemModel="Sanction" SanctionTypes="SanctionTypes"
                 HandleSaveOperationEvent="SaveSanctionEvent" />
 
-<VacationDialog @ref="vacationDialog" ItemModel="Vacation" SanctionTypes="VacationTypes"
+<VacationDialog @ref="vacationDialog" ItemModel="Vacation" VacationTypes="VacationTypes"
                 HandleSaveOperationEvent="SaveVacationEvent" />
 
 @code {
+    private SfGrid<Employee>? DefaultGrid;
 
     AddOrUpdateEmployee? addOrUpdateEmployee;
     public List<Employee> Employees { get; set; } = [];
@@ -119,6 +126,9 @@
         allState.Action += StateHasChanged;
         await LoadDefaults();
         await LoadEmployees();
+        await GetOvertimeTypes();
+        await GetSanctionTypes();
+        await GetVacationTypes();
     }
 
     private async Task LoadDefaults()
@@ -254,6 +264,15 @@
 
     }
 
+    private async Task GetOvertimeTypes() =>
+    OvertimeTypes = await overtimeTypeService.GetAll(Constants.OvertimeTypeBaseUrl);
+
+    private async Task GetSanctionTypes() =>
+        SanctionTypes = await sanctionTypeService.GetAll(Constants.SanctionTypeBaseUrl);
+
+    private async Task GetVacationTypes() =>
+        VacationTypes = await vacationTypeService.GetAll(Constants.VacationTypeBaseUrl);
+
     // Add Health clicked
     DoctorDialog? doctorDialog;
     Doctor Doctor = new();
@@ -377,7 +396,15 @@
         ShowAddOrUpdatePage = true;
     }
 
+    // Excel export / PDF Export
+    public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+    {
+        if (args.Item.Text == "Excel Export")
+            await this.DefaultGrid!.ExportToExcelAsync()!;
 
+        if (args.Item.Text == "PDF Export")
+            await this.DefaultGrid!.ExportToPdfAsync()!;
+    }
 
     //Display message using dialog service
     private async Task<bool> DisplayMessage(bool flag, string message)

@@ -4,7 +4,7 @@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/home/dashboard">
+        <a class="navbar-brand cursorStyle" @onclick="HomeClicked">
             <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
         </a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -14,28 +14,27 @@
 </div>
    
 
-        <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-                <nav class="flex-column">
+        <div class="@NavMenuCssClass nav-scrollable">
+                    <nav class="flex-column">
+                            <AuthorizeView Roles="Admin">
+                                <Authorized>
+                                        <div class="nav-item px-3">
+                                            <NavLink class="nav-link p-1" @onclick="ShowAdminMenuContainer" style="cursor:pointer;" href="javascript:void()">
+                                                <div class="hstack gap-1">
+                                                    <span class="bi bi-person-fill fs-3 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                                    <span>Administration</span>
+                                                </div>
+                                            </NavLink>
 
-        <AuthorizeView Roles="Admin">
-            <Authorized>
-                    <div class="nav-item px-3">
-                        <NavLink class="nav-link p-1" @onclick="ShowAdminMenuContainer" style="cursor:pointer;" href="javascript:void()">
-                            <div class="hstack gap-1">
-                                <span class="bi bi-person-fill fs-3 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                                <span>Administration</span>
-                            </div>
-                        </NavLink>
-
-                        <a class="nav-link p-2 text-white" style="margin-left:5rem; visibility:@CssStyle">
-                            <div class="hstack" @onclick="UserClicked">
-                                <span class="bi bi-people fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
-                                <span>Users</span>
-                            </div>
-                        </a>
-                    </div>
-            </Authorized>
-        </AuthorizeView>
+                                            <a class="nav-link p-2 text-white" style="margin-left:5rem; visibility:@CssStyle">
+                                                     <div class="hstack" @onclick="UserClicked">
+                                                    <span class="bi bi-people fs-5 text-center" aria-hidden="true" style="margin-top:-2rem"></span>
+                                                    <span>Users</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                </Authorized>
+                            </AuthorizeView>
                     <div class="nav-item px-3" style="margin-top:@DepartnmentMargin">
                         <NavLink class="nav-link p-2"
                                  @onclick="ShowDepartmentContainer"
@@ -49,7 +48,7 @@
                             </div>
                         </NavLink>
                  
-                    <div class="nav-link p-2 text-white" style="margin-left:3rem; visibility:@DepartnmenCssStyle">
+                    <div class="nav-link p-2 text-white" style="margin-left:2rem; visibility:@DepartnmenCssStyle">
                         <ul class="list-group">
                             <li style="list-style:none" class="cursorStyle">
                                 <a class="nav-link p-2" @onclick="GeneralDepartmentClicked">
@@ -196,7 +195,7 @@
             CssStyle = "hidden";
         }
     }
-    private string DepartnmenCssStyle =  "hidden";
+    private string DepartnmenCssStyle = "hidden";
     public bool ShowHideDepartment { get; set; } = false;
     private void ShowDepartmentContainer()
     {
@@ -222,6 +221,7 @@
 
     //Employee
     void EmployeeClicked() => allState.EmployeeClicked();
+    void HomeClicked() => allState.EmployeeClicked();
 
     //Types clicked
     void OvertimeTypeClicked() => allState.OvertimeTypeClicked();

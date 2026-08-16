@@ -15,7 +15,7 @@
                             <InputText @bind-Value="City.Name" class="form-control" />
                         </div>
                         <div class="form-group mt-3 mb-3">
-                            <label class="form-label">Select General Department</label>
+                            <label class="form-label">Select Country</label>
 
                             @if (City.Country != null)
                             {
@@ -36,14 +36,14 @@
                         </div>
 
                     </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary float-end" type="submit">SAVE</button>
+                    </div>
                 </div>
             </EditForm>
         </Content>
     </DialogTemplates>
 
-    <DialogButtons>
-        <DialogButton Content="SAVE" Type="ButtonType.Submit" IsPrimary="true" OnClick="Save" />
-    </DialogButtons>
 
 </SfDialog>
 
@@ -66,9 +66,10 @@
     }
 
 
-    public void OpenDialog()
+    public async Task OpenDialog()
     {
         IsVisible = true;
+        await ForceLoadCountries();
         StateHasChanged();
     }
 
@@ -89,4 +90,6 @@
         StateHasChanged();
 
     }
+    async Task ForceLoadCountries() =>
+       Countries = await countryService.GetAll(Constants.CountryBaseUrl);
 }

@@ -29,7 +29,7 @@
 @using Client.Pages.OtherPages.VacationPages
 @using Client.Pages.OtherPages.DoctorPages
 @using Client.Pages.OtherPages.SanctionPages
-
+@using Client.Pages.ContentPages.ProfilePages
 
 
 @inject AuthenticationStateProvider AuthStateProvider
@@ -68,3 +68,7 @@
 @inject IGenericServiceInterface<SanctionType> sanctionTypeService
 
 @inject IGenericServiceInterface<Doctor> doctorService
+
+@* / User Profile State *@
+@inject UserProfileState userProfileState
+@inject GetHttpClient getHttpClient
