@@ -6,8 +6,9 @@
             <div class="col-lg-12">
                 <div class="card shadow-lg border-info">
                     <div class="card-header">
-                        <h4 class="float-start">Manage Employees Sanctions</h4>
+                        <h4 class="float-start">Manage Employees' Sanctions</h4>
                     </div>
+                    <div class="card-header" style="max-height:580px; overflow-x:hidden; overflow-y:scroll;">
                     <div class="card-body">
                         @{
                             var Tool = (new List<string>() { "Search", "ExcelExport", "PdfExport", "Print" });
@@ -44,6 +45,7 @@
                             </GridColumns>
                         </SfGrid>
                     </div>
+                    </div>
                     <div class="card-footer">
                     </div>
                 </div>
@@ -75,7 +77,7 @@
     {
         await GetTypes();
         await GetSanctions();
-        allState.Action += StateHasChanged;
+        allState.Action += OnStateChanged;
     }
 
     private async Task GetTypes() =>
@@ -94,6 +96,7 @@
         {
             ItemModel = new();
             await GetSanctions();
+
         }
     }
 
@@ -109,10 +112,15 @@
         ConfirmAsync($"Are you sure you wanna delete {item.SanctionType!.Name}?", "Confirm Delete");
         if (!confirm) return;
 
-        var response = await sanctionService.DeleteById(item.EmployeeId, Constants.OvertimeBaseUrl);
+        var response = await sanctionService.DeleteById(item.EmployeeId, Constants.SanctionBaseUrl);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (result)
+        {
             await GetSanctions();
+            bannerState.ApplyChange(BannerItem.Sanctions, BannerOperation.Delete);
+
+        }
+       
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)
@@ -139,8 +147,16 @@
             await this.DefaultGrid!.ExportToPdfAsync()!;
     }
 
+    private async void OnStateChanged()
+    {
+        if (allState.ShowSanction)
+            await GetSanctions();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
     public void Dispose()
     {
-        allState.Action -= StateHasChanged;
+        allState.Action -= OnStateChanged;
     }
 }

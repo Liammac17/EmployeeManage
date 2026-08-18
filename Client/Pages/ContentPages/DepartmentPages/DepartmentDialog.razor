@@ -62,7 +62,11 @@
         if (string.IsNullOrEmpty(Department.Name) || Department.GeneralDepartmentId <= 0)
             await dialogService.AlertAsync("You need to provide a Department name", "Alert");
         else
+        {
             await HandleSaveOperationEvent.InvokeAsync(Department);
+            StateHasChanged();
+        }
+        
     }
 
 

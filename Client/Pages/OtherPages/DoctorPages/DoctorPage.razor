@@ -1,11 +1,11 @@
 ﻿@implements IDisposable
 @if (allState.ShowHealth)
 {
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card border-warning shadow-lg">
-                    <div class="card-header"> <h4 class="float-start">Health Information</h4> </div>
+                <div class="card shadow-lg border-info">
+                    <div class="card-header"> <h4 class="float-start">Manage Employees' Health Information</h4> </div>
                     <div class="card-header" style="max-height:580px; overflow-x:hidden; overflow-y:scroll;">
 
                         <div class="card-body">
@@ -62,7 +62,7 @@
     protected async override Task OnInitializedAsync()
     {
         await GetHealth();
-        allState.Action += StateHasChanged;
+        allState.Action += OnStateChanged;
     }
 
     private async Task GetHealth() => Doctors = await doctorService.GetAll(Constants.DoctorBaseUrl);
@@ -84,10 +84,12 @@
         {
             Doctor = new();
             await GetHealth();
+
+
         }
     }
 
-   private void EditClicked(Doctor item)
+    private void EditClicked(Doctor item)
     {
         Doctor = item;
         OpenDialog();
@@ -101,7 +103,10 @@
         var response = await doctorService.DeleteById(item.EmployeeId, Constants.DoctorBaseUrl);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (result)
+        {
             await GetHealth();
+            bannerState.ApplyChange(BannerItem.Health, BannerOperation.Delete);
+        }
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)
@@ -118,9 +123,6 @@
         }
     }
 
-
-    public void Dispose() => allState.Action -= StateHasChanged;
-
     //Excel export / PDF Export
     public async Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
     {
@@ -129,5 +131,18 @@
 
         if (args.Item.Text == "PDF Export")
             await this.DefaultGrid!.ExportToPdfAsync()!;
+    }
+
+    private async void OnStateChanged()
+    {
+        if (allState.ShowHealth)
+            await GetHealth();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        allState.Action -= OnStateChanged;
     }
 }

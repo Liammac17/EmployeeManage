@@ -163,6 +163,13 @@
             Action?.Invoke();
         }
 
+        public void CloseUserProfile()
+        {
+            ShowUserProfile = false;
+            ShowEmployee = true;
+            Action?.Invoke();
+        }
+
         private void ResetAllDepartments()
         {
             ShowGeneralDepartment = false;

@@ -1,11 +1,11 @@
 ﻿@if (allState.ShowOvertime)
 {
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
         <div class="row">
             <div class="col-lg-12">
-                <div class="card border-danger shadow-lg">
+                <div class="card shadow-lg border-info">
                     <div class="card-header">
-                        <h4 class="float-start">Manage Employees Overtime</h4>
+                        <h4 class="float-start">Manage Employees' Overtime</h4>
                     </div>
                     <div class="card-header" style="max-height:580px; overflow-x:hidden; overflow-y:scroll;">
                         <div class="card-body">
@@ -67,7 +67,7 @@
     { 
         await GetTypes();
         await GetOvertime();
-        allState.Action += StateHasChanged;
+        allState.Action += OnStateChanged;
     }
 
     private async Task GetTypes() => 
@@ -86,6 +86,9 @@
         {
             ItemModel = new();
             await GetOvertime();
+          
+
+
         }
     }
 
@@ -103,7 +106,12 @@
         var response = await overtimeService.DeleteById(item.EmployeeId, Constants.OvertimeBaseUrl);
         var result = await DisplayMessage(response.Flag, response.Message);
         if (result)
+        {
             await GetOvertime();
+            bannerState.ApplyChange(BannerItem.Overtimes, BannerOperation.Delete);
+
+        }
+       
     }
 
     private async Task<bool> DisplayMessage(bool flag, string message)
@@ -130,5 +138,16 @@
             await this.DefaultGrid!.ExportToPdfAsync()!;
     }
 
-    public void Dispose() => allState.Action -= StateHasChanged;
+    private async void OnStateChanged()
+    {
+        if (allState.ShowOvertime)
+            await GetOvertime();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        allState.Action -= OnStateChanged;
+    }
 }

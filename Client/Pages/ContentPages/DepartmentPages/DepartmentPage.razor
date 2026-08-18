@@ -114,6 +114,7 @@
     private async Task HandleSaveOperationEvent(Department department)
     {
         bool successCheck = false;
+        bool isAdd = department.Id <= 0;
         if (Department.Id > 0)
         {
             var result = await departmentService.Update(department, Constants.DepartmentBaseUrl);
@@ -128,8 +129,13 @@
         {
             Department = new();
             await GetDepartments();
+
+            if (isAdd)
+                bannerState.ApplyChange(BannerItem.Departments, BannerOperation.Add);
+
             departmentDialog?.ChangeTitle("Add");
             departmentDialog?.CloseDialog();
+
         }
 
     }
@@ -153,7 +159,13 @@
 
         var response = await departmentService.DeleteById(dep.Id, Constants.DepartmentBaseUrl);
         if (await DisplayMessage(response.Flag, response.Message))
+        {
             await GetDepartments();
+
+            bannerState.ApplyChange(BannerItem.Departments, BannerOperation.Delete);
+
+        }
+        
 
     }
 

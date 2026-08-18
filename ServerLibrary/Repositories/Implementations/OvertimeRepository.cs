@@ -25,7 +25,7 @@ namespace ServerLibrary.Repositories.Implementations
 
         public async Task<List<Overtime>> GetAll() => await appDbContext
             .Overtimes
-            .AsNoTracking()
+            .AsNoTracking().Include(t => t.OvertimeType)
             .ToListAsync();
 
         public async Task<Overtime> GetById(int id) => await appDbContext

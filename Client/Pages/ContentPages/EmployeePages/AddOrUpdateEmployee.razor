@@ -289,8 +289,9 @@
     public bool FirstLayer { get; set; } = true;
     public bool SecondLayer { get; set; } = false;
 
-    protected override void OnInitialized()
+    protected async override Task OnInitializedAsync()
     {
+        await GetServices();
         allState.Action += StateHasChanged;
     }
 
@@ -304,6 +305,20 @@
     {
         FirstLayer = true;
         SecondLayer = false;
+    }
+
+    //generalDepartmentService
+
+    private async Task GetServices()
+    {
+        GeneralDepartments = await generalDepartmentService.GetAll(Constants.GeneralDepartmentBaseUrl);
+        Departments = await departmentService.GetAll(Constants.DepartmentBaseUrl);
+        Branches = await branchService.GetAll(Constants.BranchBaseUrl);
+
+        Countries = await countryService.GetAll(Constants.CountryBaseUrl);
+        Cities = await cityService.GetAll(Constants.CountryBaseUrl);
+        Towns = await townService.GetAll(Constants.TownBaseUrl);
+
     }
 
     //Form closed
