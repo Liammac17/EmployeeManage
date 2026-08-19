@@ -1,0 +1,100 @@
+﻿@implements IDisposable
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-primary">
+                <div class="card-header"><i class="bi bi-people text-primary"></i> Employees
+                    <span class="badge bg-primary fs-6">@bannerState.Employees</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-success" @onclick="VacationClicked">
+                <div class="card-header"><i class="bi bi-backpack3 text-success"></i> Vacation
+                    <span class="badge bg-success fs-6">@bannerState.Vacations</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-danger" @onclick="OvertimeClicked">
+                <div class="card-header"><i class="bi bi-stopwatch text-danger"></i> Overtime
+                    <span class="badge bg-danger fs-6">@bannerState.Overtimes</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-warning" @onclick="HealthClicked">
+                <div class="card-header"><i class="bi bi-hospital text-warning"></i> Health
+                    <span class="badge bg-warning fs-6">@bannerState.Health</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-warning" @onclick="SanctionClicked">
+                <div class="card-header"><i class="bi bi-hospital text-warning"></i> Sanctions
+                    <span class="badge bg-info fs-6">@bannerState.Sanctions</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 cursorStyle">
+            <div class="card border-warning">
+                <div class="card-header"><i class="bi bi-hospital text-warning"></i> Departments
+                    <span class="badge bg-dark fs-6">@bannerState.Departments</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #cursorStyle {
+        cursor: pointer;
+    }
+</style>
+
+
+@code {
+
+    protected async override Task OnInitializedAsync()
+    {
+        allState.Action += StateHasChanged;
+
+        bannerState.Changed += StateHasChanged;
+        await LoadDefaults();
+
+    }
+
+    async Task LoadDefaults()
+    {
+        var employees = await employeeService.GetAll(Constants.EmployeeBaseUrl);
+        var departments = await departmentService.GetAll(Constants.DepartmentBaseUrl);
+        var overtimes = await overtimeService.GetAll(Constants.OvertimeBaseUrl);
+        var sanctions = await sanctionService.GetAll(Constants.SanctionBaseUrl);
+        var vacations = await vacationService.GetAll(Constants.VacationBaseUrl);
+        var health = await doctorService.GetAll(Constants.DoctorBaseUrl);
+
+        bannerState.SetCounts(
+            employees.Count,
+            vacations.Count,
+            overtimes.Count,
+            health.Count,
+            sanctions.Count,
+            departments.Count);
+    }
+
+    void HealthClicked() => allState.HealthClicked();
+    void OvertimeClicked() => allState.OvertimeClicked();
+    void SanctionClicked() => allState.SanctionClicked();
+    void VacationClicked() => allState.VacationClicked();
+
+    public void Dispose()
+    {
+        allState.Action -= StateHasChanged;
+        bannerState.Changed -= StateHasChanged;
+    }
+
+}
