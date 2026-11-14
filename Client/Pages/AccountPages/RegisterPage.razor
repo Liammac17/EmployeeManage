@@ -2,62 +2,89 @@
 @layout AuthenticationLayout
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-5"></div>
-        <div class="col-lg-2">
-            <EditForm Enhance Model="User" OnValidSubmit="HandleRegistration">
-                <DataAnnotationsValidator />
-                <div class="card bg-dark" style="opacity:0.5; margin-top:50%; border-radius:10px; color:white; font-weight:bold">
-                    <div class="card-header text-center fs-5 mb-2">Register</div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label class="form-label">Fullname</label>
-                            <InputText @bind-Value="User.Fullname" class="form-control"></InputText>
-                        </div>
+<EditForm Model="User"
+          OnValidSubmit="HandleRegistration"
+          class="auth-card">
 
-                        <div class="form-group mt-3">
-                            <label class="form-label">Email</label>
-                            <InputText @bind-Value="User.Email" class="form-control"></InputText>
-                        </div>
+    <DataAnnotationsValidator />
 
-                        <div class="form-group mt-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" @bind="User.Password" class="form-control" />
-                        </div>
+    <header class="auth-header">
+        <p class="auth-brand">EmployeeManage</p>
+        <h1>Create an account</h1>
+        <p>Enter your details to get started.</p>
+    </header>
 
-                        <div class="form-group mt-3">
-                            <label class="form-label">Confirm Password</label>
-                            <input type="password" @bind="User.ConfirmPassword" class="form-control" />
-                        </div>
+    <div class="auth-fields">
+        <div class="auth-field">
+            <label for="register-name">Full name</label>
 
-                        <div class="form-group mt-3">
-                            @if (ShowLoadButton)
-                            {
-                                <ButtonLoadingSpinner></ButtonLoadingSpinner>
+            <InputText id="register-name"
+                       class="auth-input"
+                       autocomplete="name"
+                       @bind-Value="User.Fullname" />
 
-                            }
-                            else
-                            {
-                                <button class="btn btn-outline-primary float-end" type="submit">Register</button>
-
-                            }
-                        </div>
-                    </div>
-                <div class="card-footer">
-                    <span class="text-center">
-                        Have an account already>
-                        <a href="/identity/account/login" class="text-decoration-none text-white">Sign In</a>
-                    </span>
-                    <ValidationSummary />
-                    </div>
-                </div>
-            </EditForm>
+            <ValidationMessage For="@(() => User.Fullname)" />
         </div>
-        <div class="col-lg-6">
+
+        <div class="auth-field">
+            <label for="register-email">Email</label>
+
+            <InputText id="register-email"
+                       type="email"
+                       class="auth-input"
+                       autocomplete="email"
+                       @bind-Value="User.Email" />
+
+            <ValidationMessage For="@(() => User.Email)" />
+        </div>
+
+        <div class="auth-field">
+            <label for="register-password">Password</label>
+
+            <InputText id="register-password"
+                       type="password"
+                       class="auth-input"
+                       autocomplete="new-password"
+                       @bind-Value="User.Password" />
+
+            <ValidationMessage For="@(() => User.Password)" />
+        </div>
+
+        <div class="auth-field">
+            <label for="register-confirm-password">
+                Confirm password
+            </label>
+
+            <InputText id="register-confirm-password"
+                       type="password"
+                       class="auth-input"
+                       autocomplete="new-password"
+                       @bind-Value="User.ConfirmPassword" />
+
+            <ValidationMessage For="@(() => User.ConfirmPassword)" />
         </div>
     </div>
-</div>
+
+    <button type="submit"
+            class="auth-submit"
+            disabled="@ShowLoadButton">
+        @if (ShowLoadButton)
+        {
+            <span class="spinner-border spinner-border-sm"
+                  aria-hidden="true"></span>
+            <span>Creating account...</span>
+        }
+        else
+        {
+            <span>Create account</span>
+        }
+    </button>
+
+    <p class="auth-footer">
+        Already have an account?
+        <a href="/identity/account/login">Sign In</a>
+    </p>
+</EditForm>
 
 @code {
     public bool ShowLoadButton { get; set; } = false;

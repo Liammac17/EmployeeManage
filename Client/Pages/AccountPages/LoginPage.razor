@@ -3,48 +3,64 @@
 @layout AuthenticationLayout
 
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-5"></div>
-        <div class="col-lg-2">
-            <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
-                <DataAnnotationsValidator />
-                <div class="card bg-dark" style="opacity:0.5; margin-top:50%; border-radius:10px; color:white; font-weight:bold">
-                    <div class="card-header text-center fs-5 mb-2">Login</div>
-                    <div class="card-body">
-                        <div class="form-group mt-3">
-                            <label class="form-label">Email</label>
-                            <InputText @bind-Value="User.Email" class="form-control"></InputText>
-                        </div>
+<EditForm Model="User"
+          OnValidSubmit="HandleLogin"
+          class="auth-card">
 
-                        <div class="form-group mt-3">
-                            <label class="form-label">Password</label>
-                            <input type="password" @bind="User.Password" class="form-control" />
-                        </div>
+    <DataAnnotationsValidator />
 
-                        <div class="form-group mt-3">
-                            @if (ShowLoadButton)
-                            {
-                                <ButtonLoadingSpinner></ButtonLoadingSpinner>
-                            }
-                            else
-                            {
-                                <button class="btn btn-outline-primary float-end" type="submit">Login</button>
-                            }
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="text-center">
-                            Don't have an account?
-                            <a href="/identity/account/register" class="text-decoration-none text-white">Register Here</a>
-                        </span>
-                        <ValidationSummary/>
-                    </div>
-                </div>
-            </EditForm>
+    <header class="auth-header">
+        <p class="auth-brand">EmployeeManage</p>
+        <h1>Sign in</h1>
+        <p>Enter your account details to continue.</p>
+    </header>
+
+    <div class="auth-fields">
+        <div class="auth-field">
+            <label for="login-email">Email</label>
+
+            <InputText id="login-email"
+                       type="email"
+                       class="auth-input"
+                       autocomplete="username"
+                       @bind-Value="User.Email" />
+
+            <ValidationMessage For="@(() => User.Email)" />
+        </div>
+
+        <div class="auth-field">
+            <label for="login-password">Password</label>
+
+            <InputText id="login-password"
+                       type="password"
+                       class="auth-input"
+                       autocomplete="current-password"
+                       @bind-Value="User.Password" />
+
+            <ValidationMessage For="@(() => User.Password)" />
         </div>
     </div>
-</div>
+
+    <button type="submit"
+            class="auth-submit"
+            disabled="@ShowLoadButton">
+        @if (ShowLoadButton)
+        {
+            <span class="spinner-border spinner-border-sm"
+                  aria-hidden="true"></span>
+            <span>Signing in...</span>
+        }
+        else
+        {
+            <span>Sign in</span>
+        }
+    </button>
+
+    <p class="auth-footer">
+        Don't have an account?
+        <a href="/identity/account/register">Register Here</a>
+    </p>
+</EditForm>
 
 @code {
 
