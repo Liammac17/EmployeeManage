@@ -101,3 +101,138 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+
+.auth-shell,
+.auth-shell * {
+    box-sizing: border-box;
+}
+
+.auth-shell {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: clamp(1rem, 3vw, 2rem);
+    background: linear-gradient(rgba(5, 20, 15, 0.45), rgba(5, 20, 15, 0.65)), url('/Images/Background/Forest.jpg') center / cover no-repeat;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    margin: 0;
+    padding: clamp(1.5rem, 4vw, 2rem);
+    color: #f5faf7;
+    background: rgba(12, 28, 22, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 16px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+}
+
+.auth-header {
+    margin-bottom: 1.75rem;
+}
+
+    .auth-header .auth-brand {
+        margin: 0 0 0.75rem;
+        color: #6ee7b7;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .auth-header h1 {
+        margin: 0 0 0.5rem;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .auth-header p {
+        margin: 0;
+        color: #c6d4cc;
+    }
+
+.auth-fields {
+    display: grid;
+    gap: 1rem;
+}
+
+.auth-field label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.auth-input {
+    display: block;
+    width: 100%;
+    min-height: 46px;
+    padding: 0.7rem 0.85rem;
+    color: #142c21;
+    background: #f8fbf9;
+    border: 1px solid #c6d4cc;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.auth-submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    min-height: 46px;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1rem;
+    color: #08251a;
+    background: #6ee7b7;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+    .auth-submit:hover:not(:disabled) {
+        background: #9aefcd;
+    }
+
+    .auth-submit:disabled {
+        opacity: 0.65;
+        cursor: wait;
+    }
+
+.auth-footer {
+    margin: 1.5rem 0 0;
+    color: #c6d4cc;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+    .auth-footer a {
+        color: #9aefcd;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        white-space: nowrap;
+    }
+
+        .auth-shell .auth-input:focus-visible,
+        .auth-submit:focus-visible,
+        .auth-footer a:focus-visible {
+            outline: 3px solid #6ee7b7;
+            outline-offset: 3px;
+        }
+
+.auth-shell .auth-input.invalid {
+    border-color: #fca5a5;
+}
+
+.auth-shell .validation-message {
+    margin-top: 0.35rem;
+    color: #fca5a5;
+    font-size: 0.85rem;
+}
